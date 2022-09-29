@@ -12,4 +12,4 @@ CMD [ "python","main.py" ]
 
 # docker build -t twitter:demo .
 
-# docker run twitter:demo --detach
+# docker run --detach twitter:demo 
