@@ -1,7 +1,8 @@
 import tweepy
 from authentication import authentication  # Consumer and access token/key
 
-# this code was recoleted from https://piratefache.ch/twitter-streaming-api-with-tweepy/
+
+SEARCH = '#norrss'
 
 class TwitterStreamListener(tweepy.StreamListener):
 	""" A listener handles tweets are the received from the stream.
@@ -55,11 +56,11 @@ def get_user_informations(tweet):
 		print("User Follower count \t:" + str(tweet.user.followers_count))
 		print("User Created at \t:" + str(tweet.user.created_at))
 
-	print("\n"*3)
+	print("\n"*2)
 
 	
 if __name__ == '__main__':
-	
+	print('> init')
 	# Get access and key from another class
 	auth = authentication()
 
@@ -79,4 +80,4 @@ if __name__ == '__main__':
 	streamListener = TwitterStreamListener()
 	myStream = tweepy.Stream(auth=api.auth, listener=streamListener)
 
-	myStream.filter(track=['#demodemodemo'], is_async=True)
+	myStream.filter(track=[SEARCH], is_async=True)
