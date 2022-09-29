@@ -1,6 +1,6 @@
 import tweepy
 from authentication import authentication  # Consumer and access token/key
-
+import time
 
 SEARCH = '#norrss'
 
@@ -60,7 +60,6 @@ def get_user_informations(tweet):
 
 	
 if __name__ == '__main__':
-	print('> init')
 	# Get access and key from another class
 	auth = authentication()
 
@@ -70,14 +69,23 @@ if __name__ == '__main__':
 	access_token = auth.getaccess_token()
 	access_token_secret = auth.getaccess_token_secret()
 
-	# Authentication
-	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-	auth.secure = True
-	auth.set_access_token(access_token, access_token_secret)
-	
-	api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_count=10, retry_delay=5, retry_errors=5)
+	while True:
+		try:
+			print('> init')
+			# Authentication
+			auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+			auth.secure = True
+			auth.set_access_token(access_token, access_token_secret)
+			
+			# api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_count=10, retry_delay=5, retry_errors=5)
 
-	streamListener = TwitterStreamListener()
-	myStream = tweepy.Stream(auth=api.auth, listener=streamListener)
+			streamListener = TwitterStreamListener()
+			myStream = tweepy.Stream(auth=auth, listener=streamListener)
+			# myStream = tweepy.Stream(auth=api.auth, listener=streamListener)
+			myStream.filter(track=[SEARCH], is_async=False)
 
-	myStream.filter(track=[SEARCH], is_async=True)
+		except Exception as error:
+			print(error)
+			print("Critical error")
+		
+		time.sleep(20)
